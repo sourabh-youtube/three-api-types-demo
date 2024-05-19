@@ -17,4 +17,4 @@ bun dev
 [X] Add material UI
 [ ] Add Drizzle
 [ ] Add zod and api type-safety
-[ ] Add OpenAPI
+[X] Add OpenAPI
