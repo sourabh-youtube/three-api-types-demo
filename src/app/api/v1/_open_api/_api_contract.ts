@@ -1,3 +1,4 @@
+//@ts-ignore
 import { initContract } from "@ts-rest/core";
 
 import {
@@ -12,7 +13,7 @@ export const ApiContractV1 = c.router(
   {
     ping: {
       method: "GET",
-      path: "/api",
+      path: "/api/ping",
       responses: {
         200: ZSuccessfulGetPingResponseSchema,
         404: ZUnsuccessfulResponseSchema,
