@@ -1,13 +1,15 @@
 "use client";
-import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { CreateUserForm } from "@/components";
+import { IUser } from "@/server/model/users";
+import { Box, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { postPing } from "./actions/mutation/_ping";
-import { getPing, IGetPing } from "./actions/query/_ping";
+import { getPing } from "./actions/query/_ping";
 
 export default function Home() {
   const { data: pingData } = useQuery({
     queryKey: ["get-ping"],
-    queryFn: async (): Promise<IGetPing> => getPing(),
+    queryFn: async (): Promise<IUser | undefined> => getPing(),
     refetchOnMount: false,
   });
 
@@ -15,11 +17,11 @@ export default function Home() {
     data: pingPostData,
     isPending: pingPostIsPending,
     isSuccess: pingPostIsSuccess,
-    mutate: pingPostMutate,
   } = useMutation({
     mutationKey: ["post-ping"],
     mutationFn: postPing,
   });
+
   return (
     <main>
       <Box>
@@ -33,20 +35,8 @@ export default function Home() {
         <Typography variant="h5">
           POST <code>/api/ping</code>
         </Typography>
-        <Button
-          variant="contained"
-          onClick={() => pingPostMutate("post data sent")}
-        >
-          save
-        </Button>
-        <Typography>
-          isPending: {String(pingPostIsPending)}, isSuccess:{" "}
-          {String(pingPostIsSuccess)}
-        </Typography>
-        <Typography variant="body1">
-          {pingPostIsPending && <CircularProgress size={20} />}{" "}
-          {JSON.stringify(pingPostData)}
-        </Typography>
+        <CreateUserForm />
+        <Typography variant="body1">{JSON.stringify(pingPostData)}</Typography>
       </Box>
     </main>
   );
