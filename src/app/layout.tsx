@@ -15,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("NEXTJS CUSTOM TEMPLATE");
   return (
     <html lang="en">
       <body className={GeistSans.className}>
