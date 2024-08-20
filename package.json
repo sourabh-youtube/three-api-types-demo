@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
     "@mui/icons-material": "^5.15.18",
-    "@mui/material": "^5.16.5",
+    "@mui/material": "^5.16.7",
     "@mui/material-nextjs": "^5.16.4",
     "@ts-rest/core": "^3.47.0",
     "@ts-rest/open-api": "^3.45.2",
