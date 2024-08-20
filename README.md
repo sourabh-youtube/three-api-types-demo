@@ -11,10 +11,3 @@ pnpm dev
 # or
 bun dev
 ```
-
-## TODO
-
-- [X] Add material UI
-- [ ] Add Drizzle
-- [ ] Add zod and api type-safety
-- [X] Add OpenAPI
