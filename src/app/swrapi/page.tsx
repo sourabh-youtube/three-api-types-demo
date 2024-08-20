@@ -1,41 +1,103 @@
 "use client";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
+import { useState } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+
+async function sendRequest<T>(url: string, { arg }: { arg: T }) {
+  return fetch(url, {
+    method: "POST",
+    body: JSON.stringify(arg),
+  }).then((res) => res.json());
+}
 
 export default function SWRAPIResponsePage() {
+  const [postIsLoading, setPostIsLoading] = useState(false);
+  const [postResponse, setPostResponse] = useState(null);
+  const { trigger } = useSWRMutation("/api/ping", sendRequest<ICreateUser>);
+
   const {
-    data: response,
-    error,
-    isLoading,
-  } = useSWR("http://localhost:3000/api/ping");
+    data: getResponse,
+    error: getErorr,
+    isLoading: getIsLoading,
+  } = useSWR("/api/ping");
 
-  if (error) return <div>failed to load</div>;
-
-  if (isLoading) return <div>loading...</div>;
+  const handlePostPing = async () => {
+    const postData: ICreateUser = { name: "John Doe", role: "ADMIN" };
+    setPostIsLoading(true);
+    const response = await trigger(postData);
+    setPostResponse(response);
+    setPostIsLoading(false);
+  };
 
   return (
     <Box
       display="flex"
-      alignItems="center"
-      justifyContent="center"
+      height="100vh"
       flexDirection="column"
-      height={"100vh"}
+      justifyContent="center"
+      alignItems="center"
     >
-      <Typography variant="h4" my={4}>
-        REST API response using SWR
-      </Typography>
-      {response ? (
-        <Typography
-          variant="body1"
-          sx={{ backgroundColor: "beige", p: 4, borderRadius: 4 }}
-        >
-          <pre>
-            <code>{JSON.stringify(response, null, 2)}</code>
-          </pre>
+      <Box>
+        <Typography variant="h5">
+          GET from <code>/api/ping</code>
         </Typography>
-      ) : (
-        <CircularProgress />
-      )}
+        <Typography
+          mb={2}
+          variant="body2"
+          color="success"
+          sx={{
+            backgroundColor: "beige",
+            borderRadius: 2,
+            width: 300,
+            padding: 2,
+          }}
+        >
+          {getResponse ? (
+            <pre>
+              <code>{JSON.stringify(getResponse, null, 2)}</code>
+            </pre>
+          ) : getErorr ? (
+            <pre>
+              <code>{JSON.stringify(getErorr, null, 2)}</code>
+            </pre>
+          ) : getIsLoading ? (
+            <CircularProgress />
+          ) : (
+            "No data"
+          )}
+        </Typography>
+      </Box>
+      <br />
+      <Box>
+        <Typography variant="h5">
+          POST <code>/api/ping</code>
+        </Typography>
+        <Typography
+          mb={2}
+          variant="body2"
+          color="success"
+          sx={{
+            backgroundColor: "beige",
+            borderRadius: 2,
+            width: 300,
+            padding: 2,
+          }}
+        >
+          {postResponse ? (
+            <pre>
+              <code>{JSON.stringify(postResponse, null, 2)}</code>
+            </pre>
+          ) : postIsLoading ? (
+            <CircularProgress />
+          ) : (
+            "No data"
+          )}
+        </Typography>
+        <Button variant="contained" onClick={() => handlePostPing()}>
+          Send POST request
+        </Button>
+      </Box>
     </Box>
   );
 }

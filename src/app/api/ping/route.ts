@@ -1,11 +1,23 @@
 import { NextResponse } from "next/server";
 
-async function helloHandler(request: Request) {
+async function getHelloHandler(request: Request) {
   // run some backend logic
   console.log("Hello from server");
 
   // return a response
-  return NextResponse.json({ message: "Hello from server" });
+  return NextResponse.json({ message: "Hello from server get" } as APIResponse);
 }
 
-export { helloHandler as GET };
+async function postHelloHandler(request: Request) {
+  // run some backend logic
+  console.log("Hello from server");
+  const body = await request.json();
+
+  console.log(body);
+
+  // return a response
+  return NextResponse.json({
+    message: "Hello from server post",
+  } as APIResponse);
+}
+export { getHelloHandler as GET, postHelloHandler as POST };

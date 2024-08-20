@@ -11,12 +11,19 @@ export const SWRProvider = ({ children }: { children: ReactNode }) => {
     <SWRConfig
       value={{
         provider: cacheProvider,
-        fetcher: (url: string) =>
-          fetch(url)
-            .then((res) => res.json())
+        fetcher: (url: string) => {
+          return fetch(url)
+            .then((res) => {
+              if (!res.ok) {
+                // global error handling
+                console.error(res.statusText);
+              }
+              return res.json();
+            })
             .catch((err) => {
               console.error(err);
-            }),
+            });
+        },
       }}
     >
       {children}
