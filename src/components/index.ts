@@ -2,3 +2,7 @@ export { ReactQueryClientProvider } from "@/components/context/ReactQueryClientP
 export { SWRProvider } from "@/components/context/SWRProvider";
 export { ToggleMode } from "./switch/ToggleMode";
 
+
+export { useGetPing } from "@/components/hooks/useGetPing";
+export { usePostPing } from "@/components/hooks/usePostPing";
+

@@ -1,15 +1,9 @@
 "use client";
+import { useGetPing, usePostPing } from "@/components";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { postPing } from "./actions/mutation/_ping";
-import { getPing } from "./actions/query/_ping";
 
 export default function Home() {
-  const { data: pingData } = useQuery({
-    queryKey: ["get-ping"],
-    queryFn: async (): Promise<APIResponse | undefined> => getPing(),
-    refetchOnMount: false,
-  });
+  const { data: pingData } = useGetPing();
 
   const {
     data: pingPostData,
@@ -18,10 +12,7 @@ export default function Home() {
     isError: pingPostIsError,
     error: pingPostError,
     mutate: pingPostMutate,
-  } = useMutation({
-    mutationKey: ["post-ping"],
-    mutationFn: postPing,
-  });
+  } = usePostPing();
 
   return (
     <main>
