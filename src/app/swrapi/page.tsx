@@ -1,6 +1,5 @@
 "use client";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import { useState } from "react";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 
@@ -12,9 +11,12 @@ async function sendRequest<T>(url: string, { arg }: { arg: T }) {
 }
 
 export default function SWRAPIResponsePage() {
-  const [postIsLoading, setPostIsLoading] = useState(false);
-  const [postResponse, setPostResponse] = useState(null);
-  const { trigger } = useSWRMutation("/api/ping", sendRequest<ICreateUser>);
+  const {
+    trigger,
+    isMutating,
+    error: postPingError,
+    data: postPingData,
+  } = useSWRMutation("/api/ping", sendRequest<ICreateUser>);
 
   const {
     data: getResponse,
@@ -24,10 +26,7 @@ export default function SWRAPIResponsePage() {
 
   const handlePostPing = async () => {
     const postData: ICreateUser = { name: "John Doe", role: "ADMIN" };
-    setPostIsLoading(true);
-    const response = await trigger(postData);
-    setPostResponse(response);
-    setPostIsLoading(false);
+    await trigger(postData);
   };
 
   return (
@@ -84,12 +83,16 @@ export default function SWRAPIResponsePage() {
             padding: 2,
           }}
         >
-          {postResponse ? (
+          {postPingData ? (
             <pre>
-              <code>{JSON.stringify(postResponse, null, 2)}</code>
+              <code>{JSON.stringify(postPingData, null, 2)}</code>
             </pre>
-          ) : postIsLoading ? (
+          ) : isMutating ? (
             <CircularProgress />
+          ) : postPingError ? (
+            <pre>
+              <code>{JSON.stringify(postPingError, null, 2)}</code>
+            </pre>
           ) : (
             "No data"
           )}

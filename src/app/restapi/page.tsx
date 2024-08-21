@@ -13,6 +13,7 @@ export default function RestApiDemoPage() {
   const [getIsLoading, setGetIsLoading] = useState(false);
   const [postIsLoading, setPostIsLoading] = useState(false);
 
+  // Make a GET request to the server on page load
   useEffect(() => {
     setGetIsLoading(true);
     const controller = new AbortController();
@@ -28,6 +29,8 @@ export default function RestApiDemoPage() {
       controller.abort();
     };
   }, []);
+
+  // Make a POST request to the server
   const handlePostPing = (data: any) => {
     setPostIsLoading(true);
 
