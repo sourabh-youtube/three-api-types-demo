@@ -1,17 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-
+import { postPing } from "../actions";
 export function usePostPing() {
   return useMutation({
     mutationKey: ["post-ping"],
-    mutationFn: async (data: ICreateUser): Promise<APIResponse> => {
-      "use server";
-      // Run some backend logic here
-      console.log(data);
-
-      // Simulate a delay of 2 seconds
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      return { status: "success", message: "pong using mutation" };
-    },
+    mutationFn: postPing,
   });
 }

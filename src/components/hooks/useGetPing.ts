@@ -1,14 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { getPing } from "../actions";
 
 export function useGetPing(id: number = 0) {
   return useQuery({
     queryKey: ["get-ping"],
-    queryFn: async () => {
-      "use server";
-      // run some backend logic here
-      console.log(id);
-      return { status: "success", message: "pong using query" };
-    },
+    queryFn: () => getPing(id),
     refetchOnMount: false,
   });
 }
