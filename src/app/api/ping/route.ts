@@ -12,6 +12,7 @@ async function postHelloHandler(request: Request) {
   // run some backend logic
   console.log("Hello from server");
   const body = await request.json();
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   console.log(body);
 
